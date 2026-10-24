@@ -72,17 +72,17 @@ Use images of the same character at different gaze angles. The default numbered 
 | File | Direction | Suggested pose |
 | --- | --- | --- |
 | `1.jpg` | Center | Looking straight ahead |
-| `2.jpg` | Left | Looking left |
+| `2.jpg` | Soft down | Eyes slightly down |
 | `3.jpg` | Down | Looking down |
 | `4.jpg` | Right | Looking right |
 | `5.jpg` | Up | Looking up |
-| `6.jpg` | Down-left | Looking down and left |
-| `7.jpg` | Soft left | Eyes slightly left |
-| `8.jpg` | Left-low | Eyes left and slightly down |
+| `6.jpg` | Left | Looking left |
+| `7.jpg` | Up-left | Looking up and left |
+| `8.jpg` | Soft right | Eyes slightly right |
 | `9.jpg` | Up-right | Looking up and right |
-| `10.jpg` | Soft up | Eyes up, head mostly straight |
+| `10.jpg` | Soft up | Eyes slightly up |
 
-The viewer uses `1.jpg` as the center image within the 60 px deadzone. The other images provide the directional poses and intermediate angles.
+The viewer uses `1.jpg` as the center image within the 60 px deadzone. The set has no dedicated down-left image, so that cursor sector uses the down and left poses as the cursor moves farther from the center.
 
 ### Image tips
 

@@ -97,30 +97,27 @@ $totalImages = count($images);
 
             if (totalImages <= 1) return;
 
-            // The first 5 pictures keep your exact mapping
-            const IMG_CENTER = 0; // 1.jpg
-            const IMG_LEFT   = 1; // 2.jpg
-            const IMG_DOWN   = 2; // 3.jpg
-            const IMG_RIGHT  = 3; // 4.jpg
-            const IMG_UP     = 4; // 5.jpg
+            // Image indexes follow the natural filename order: 1.jpg, 2.jpg, ...
+            const IMG_CENTER = 0; // 1.jpg: centered
+            const IMG_DOWN_SOFT = 1; // 2.jpg: slight downward gaze
+            const IMG_DOWN = 2; // 3.jpg: stronger downward gaze
+            const IMG_RIGHT = 3; // 4.jpg: right
+            const IMG_UP = 4; // 5.jpg: up
+            const IMG_LEFT = 5; // 6.jpg: left
+            const IMG_UP_LEFT = 6; // 7.jpg: up-left
+            const IMG_RIGHT_SOFT = 7; // 8.jpg: slight rightward gaze
+            const IMG_UP_RIGHT = 8; // 9.jpg: up-right
+            const IMG_UP_SOFT = 9; // 10.jpg: slight upward gaze
 
-            // The extra pictures fill in the angles between them
-            const IMG_DOWN_LEFT  = 5; // 6.jpg  looking down and left
-            const IMG_LEFT_SOFT  = 6; // 7.jpg  eyes only, a little left
-            const IMG_LEFT_LOW   = 7; // 8.jpg  eyes left, a little down
-            const IMG_UP_RIGHT   = 8; // 9.jpg  looking up and right
-            const IMG_UP_SOFT    = 9; // 10.jpg eyes up, head straight
-
-            // 8 directions, starting at Right and going clockwise:
-            // Right, Down-Right, Down, Down-Left, Left, Up-Left, Up, Up-Right
-            // Each list goes from a small look (mouse close) to a big look (mouse far)
+            // Sectors are ordered clockwise from right. Each list goes from a
+            // subtler available pose to a stronger one as the cursor moves farther.
             const SECTORS = [
-                [IMG_RIGHT],
-                [IMG_DOWN],
-                [IMG_DOWN],
-                [IMG_LEFT_LOW, IMG_DOWN_LEFT],
-                [IMG_LEFT_SOFT, IMG_LEFT],
-                [IMG_UP_SOFT],
+                [IMG_RIGHT_SOFT, IMG_RIGHT],
+                [IMG_DOWN_SOFT, IMG_DOWN],
+                [IMG_DOWN_SOFT, IMG_DOWN],
+                [IMG_DOWN, IMG_LEFT],
+                [IMG_LEFT],
+                [IMG_UP_LEFT],
                 [IMG_UP_SOFT, IMG_UP],
                 [IMG_UP_RIGHT]
             ];
