@@ -1,177 +1,160 @@
 # Mouse Tracking Image Viewer
 
-A small PHP + JavaScript project that makes a portrait follow your mouse around the screen. Move the cursor and the image swaps between 10 pre-rendered angles so the character looks like it's looking exactly where your cursor is.
+A small PHP and JavaScript project that makes a portrait follow your mouse. As you move the cursor, the viewer switches among images showing the character at different angles.
 
-It's meant for stuff like VTuber overlays, stream alerts, profile pages, or just messing around. Nothing fancy to install, just PHP and a browser.
+Use it for stream overlays, profile pages, or other small interactive projects. It runs in a PHP-enabled web server and a modern browser.
 
 ## Features
 
-- Real-time mouse tracking, the image reacts to where your cursor is
-- 8-direction look logic with smooth distance-based blending
-- Auto-loads images from the `img/` folder (jpg, jpeg, png, gif, webp)
-- Responsive, works on mobile too
-- No dependencies, just PHP and a browser
-- Clean dark UI out of the box
-
-## How it works
-
-You give it 10 images of the same character from different angles. The script checks which direction the mouse is from the center of the screen and swaps to the matching image.
-
-- Far from center means the character looks further in that direction
-- Close to center means the character looks almost straight ahead
-- Inside the 60px deadzone it always shows the center image, `1.jpg`
+- Tracks the cursor and selects an image for its direction.
+- Uses a 60 px center deadzone, where the center image is shown.
+- Loads numbered images from the `img/` folder. Supported formats are JPG, JPEG, PNG, GIF, and WebP.
+- Includes a responsive layout and dark styling.
+- Has no external dependencies.
 
 ## Requirements
 
-- XAMPP (or any PHP server like MAMP, WAMP, Laragon, or `php -S localhost:8000`)
-- A modern browser (Chrome, Firefox, Edge, Safari)
-- 10 images named `1.jpg` through `10.jpg`
+- PHP with a web server, such as XAMPP, MAMP, WAMP, or Laragon. Alternatively, use PHP's built-in server.
+- A modern browser (Chrome, Firefox, Edge, or Safari).
+- Character images in the `img/` folder. The default setup uses `1.jpg` through `10.jpg`.
 
-This guide uses XAMPP because it's the easiest for beginners.
+## Run with XAMPP
 
-## Installation with XAMPP
+### 1. Install XAMPP
 
-### Step 1 - Install XAMPP
+Download and install XAMPP from [apachefriends.org](https://www.apachefriends.org/), then open the XAMPP Control Panel.
 
-1. Go to https://www.apachefriends.org/
-2. Download the installer for your OS (Windows, macOS, or Linux).
-3. Run the installer and keep the default settings.
-4. Open the XAMPP Control Panel.
+### 2. Start Apache
 
-### Step 2 - Start Apache
+In the Control Panel, click **Start** next to Apache. If Apache cannot start, another program may be using port 80. You can configure Apache to use port 8080 instead.
 
-In the XAMPP Control Panel, click Start next to Apache. You should see the module turn green.
+### 3. Copy the project into `htdocs`
 
-If Apache won't start, port 80 is probably taken by something like Skype or IIS. Change Apache's port in `httpd.conf` to 8080 and use `http://localhost:8080/...` instead.
-
-### Step 3 - Copy the project into htdocs
-
-The `htdocs` folder is where Apache serves files from.
+Common `htdocs` locations are:
 
 - Windows: `C:\xampp\htdocs\`
 - macOS: `/Applications/XAMPP/htdocs/`
 - Linux: `/opt/lampp/htdocs/`
 
-1. Open `htdocs`.
-2. Create a new folder and name it whatever you want. For the rest of this guide I'll call it `myproject`, but you can use any name.
-3. Put `index.php` inside that folder.
-4. Create a subfolder called `img` inside it.
-5. Drop your 10 images into `img/`, named `1.jpg` through `10.jpg`.
+Copy the project folder into `htdocs`. Make sure it contains `index.php` and an `img/` subfolder with your images. For example:
 
-Your folder should look like this (using `myproject` as the example name):
+```text
 htdocs/
 └── myproject/
-├── index.php
-└── img/
-├── 1.jpg
-├── 2.jpg
-├── 3.jpg
-├── 4.jpg
-├── 5.jpg
-├── 6.jpg
-├── 7.jpg
-├── 8.jpg
-├── 9.jpg
-└── 10.jpg
+    ├── index.php
+    └── img/
+        ├── 1.jpg
+        ├── 2.jpg
+        ├── ...
+        └── 10.jpg
+```
 
-### Step 4 - Open it in your browser
+### 4. Open the viewer
 
-Go to:
-http://localhost/myproject/
+Visit <http://localhost/myproject/> in your browser. Replace `myproject` with your folder name. Move the cursor around the page to change the character's gaze.
 
-Replace `myproject` with whatever you actually named your folder. Move your mouse around the page and the character should follow you.
+If you use port 8080, visit <http://localhost:8080/myproject/> instead.
 
-## Image setup - which is the important part
+## Run with PHP's built-in server
 
-The numbering follows a counter-clockwise rotation around the character's head, starting from the center.
+Open a terminal in the project folder (the folder containing `index.php`) and run:
 
-| File | Direction | What the image should show |
-|------|-----------|----------------------------|
-| `1.jpg` | Center | Looking straight at the viewer |
-| `2.jpg` | Left | Looking to the left |
+```sh
+php -S localhost:8000
+```
+
+Then open <http://localhost:8000/> in your browser.
+
+## Image setup
+
+Use images of the same character at different gaze angles. The default numbered set is:
+
+| File | Direction | Suggested pose |
+| --- | --- | --- |
+| `1.jpg` | Center | Looking straight ahead |
+| `2.jpg` | Left | Looking left |
 | `3.jpg` | Down | Looking down |
-| `4.jpg` | Right | Looking to the right |
+| `4.jpg` | Right | Looking right |
 | `5.jpg` | Up | Looking up |
-| `6.jpg` | Down-Left | Looking down and to the left |
-| `7.jpg` | Left (soft) | Eyes only, slightly to the left |
-| `8.jpg` | Left-Low | Eyes left, a little downward |
-| `9.jpg` | Up-Right | Looking up and to the right |
-| `10.jpg` | Up (soft) | Eyes up, head mostly straight |
+| `6.jpg` | Down-left | Looking down and left |
+| `7.jpg` | Soft left | Eyes slightly left |
+| `8.jpg` | Left-low | Eyes left and slightly down |
+| `9.jpg` | Up-right | Looking up and right |
+| `10.jpg` | Soft up | Eyes up, head mostly straight |
 
+The viewer uses `1.jpg` as the center image within the 60 px deadzone. The other images provide the directional poses and intermediate angles.
 
-That's a counter-clockwise sweep: left, down, right, up. Images 6 through 10 are the in-between angles that fill the gaps and add finer motion.
-You can download my pic first to copy and then just do the pose that i did.
-For now, It's 10 pics but i'll upgrade it sooner for the user to also put in their project protfolio.
+### Image tips
 
-
-### Image tips for the best result
-
-- Use the same character, same zoom, same lighting in every shot.
-- Keep the face roughly centered in the frame.
-- Use a square-ish or portrait aspect ratio. The frame is 400x500 and images are cropped with `object-fit: cover`.
-- Recommended resolution is 600x800 or larger.
-- Keep the file size reasonable. Compress with something like Squoosh or TinyPNG.
+- Keep the character, zoom, and lighting consistent across images.
+- Keep the face near the center of each image.
+- The image frame is 400 × 500 px and uses `object-fit: cover`, so images are cropped to fill it.
+- An image resolution of 600 × 800 px or higher is recommended.
+- Compress large images to keep page load times reasonable.
 
 ## Customization
 
-Open `index.php` and tweak these values inside the script block.
+The examples below refer to the implementation in `index.php`.
 
 ### Change the deadzone
 
-The center area where the character looks straight ahead:
+Adjust the distance value in the JavaScript condition:
 
-if (distance > 60) {   // change 60 to make the center zone bigger or smaller
-Change the image frame size
-In the CSS:
-
-css
-.image-container {
-    width: 400px;    /* change me */
-    height: 500px;   /* change me */
+```js
+if (distance > 60) {
+  // Change 60 to make the center zone larger or smaller.
 }
-Use different file extensions
-The loader already supports jpg, jpeg, png, gif, and webp:
+```
 
-php
-$images = glob($imageDir . '[0-9]*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE);
-Just name your files 1.png, 2.png, and so on, and it'll work.
+### Change the image frame size
 
-Add more angles
-Add images 11.jpg, 12.jpg, and so on, then extend the SECTORS array in the JavaScript.
+Update the `.image-container` dimensions in the CSS:
 
-js
-const SECTORS = [
-    [IMG_RIGHT, IMG_EXTRA_ANGLE],  // etc.
-    ...
-];
-Troubleshooting
-Problem	Fix
-Blank page or PHP code shown as text	Apache isn't running, or you opened index.php by double-clicking it. Visit it through http://localhost/....
-The "Add Images to img folder" placeholder shows	The img/ folder is empty, or the files aren't named 1.jpg through 10.jpg. Check the path and extensions.
-Images don't swap when I move the mouse	Make sure you're moving the mouse outside the center 60px deadzone. Also check the browser console (F12) for errors.
-Apache won't start	Another program is using port 80. Close it, or change Apache's port to 8080 in httpd.conf.
-Images look stretched or cropped weirdly	Use images with a similar aspect ratio. The CSS uses object-fit: cover, which crops to fill.
-404 on the images	File names are case-sensitive on Linux and macOS. 1.JPG is not the same as 1.jpg.
-Project structure
-text
+```css
+.image-container {
+  width: 400px;
+  height: 500px;
+}
+```
+
+### Use different file extensions
+
+The image loader supports JPG, JPEG, PNG, GIF, and WebP. For example, you can name the images `1.png`, `2.png`, and so on.
+
+### Add more angles
+
+Add more numbered images and update the JavaScript `SECTORS` mapping so the new images can be selected.
+
+## Troubleshooting
+
+| Problem | Fix |
+| --- | --- |
+| Blank page or PHP code appears as text | Make sure Apache or the PHP built-in server is running, and open the site through `http://localhost/...` instead of opening `index.php` directly. |
+| The “Add Images to img folder” placeholder appears | Check that `img/` contains numbered image files and that the path and extensions are correct. |
+| Images do not change as you move the cursor | Move outside the center 60 px deadzone and check the browser console for errors. |
+| Apache will not start | Another program may be using port 80. Stop that program or configure Apache to use another port. |
+| Images look stretched or unexpectedly cropped | Use images with similar aspect ratios. The viewer uses `object-fit: cover`, which crops images to fill the frame. |
+| Images return a 404 error | Check the file names and capitalization. On Linux and macOS, `1.JPG` and `1.jpg` are different names. |
+
+## Project structure
+
+```text
 your-folder-name/
-├── index.php        // the whole app (PHP + HTML + JS + CSS)
-└── img/             // your 10 angle images
+├── index.php        # PHP, HTML, CSS, and JavaScript for the viewer
+└── img/             # Numbered character images
     ├── 1.jpg
     ├── 2.jpg
     ├── ...
     └── 10.jpg
-  
-###Ideas and extensions
-Turn it into a Twitch or Discord overlay by making the background transparent.
+```
 
-Add sound effects when the character looks in a certain direction.
+## Ideas for extensions
 
-Swap the static 10-image set for a sprite sheet with CSS steps.
+- Make the background transparent for use as a Twitch or Discord overlay.
+- Play a sound when the character looks in a particular direction.
+- Replace the individual images with a sprite sheet.
+- Explore eye tracking with a library such as WebGazer.js.
 
-Track eye position instead of mouse position with WebGazer.js.
+## License
 
-###License
-Free to use, modify, and share. Credit is appreciated but not required. Go make something cool.
-
-Made with love and way too much caffeine. If this helped you, drop a star on the repo.
+Free to use, modify, and share. Credit is appreciated but not required.
